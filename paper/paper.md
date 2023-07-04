@@ -14,9 +14,14 @@ authors:
   - name: Yuki Moriya
     orcid: 0000-0001-8195-5893
     affiliation: 1
+  - name: Toyoyuki Takada
+    orcid: 0000-0001-6796-2085
+    affiliation: 2
 affiliations:
   - name: Database Center for Life Science, Joint Support-Center for Data Science Research, Research Organization of Information and Systems
     index: 1
+  - name: Integrated Bioresource Information Division, RIKEN BioResource Research Center
+    index: 2
 date: 30 June 2023
 cito-bibliography: paper.bib
 event: BH23JP
@@ -25,7 +30,7 @@ biohackathon_url:   "https://2023.biohackathon.org/"
 biohackathon_location: "Kagawa, Japan, 2023"
 group: R1
 # URL to project git repo --- should contain the actual paper.md:
-git_url: https://github.com/biohackathon-jp/bh23-variant-mapping-hg-mm
+git_url: https://github.com/biohackathon-jp/bh23-link-hs-var-mm
 # This is the short authors description that is used at the
 # bottom of the generated paper (typically the first two authors):
 authors_short: Mitsuhashi, N. \emph{et al.}
