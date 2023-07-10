@@ -42,14 +42,10 @@ Experimental mice are widely used in human disease studies. Since the inception 
 
 # Outcomes
 
-Using the reference sequences of humans and mice, we compared the regions encoding proteins of homologous genes. First, we focused on nucleotide variants involved in amino acid substitutions. We have developed an API that returns mouse variants and strains in MoG+ as counterparts to ClinVar variants within the gene region specified by an HGNC gene symbol. The API URL is https://sparql-support.dbcls.jp/rest/human_variant_to_mouse, where queries to TogoVar,  TogoDX,  Ensembl, MoG+, and UCSC are called in a SPARQList. 
+Using the reference sequences of humans and mice, we compared the regions encoding proteins of homologous genes. First, we focused on nucleotide variants involved in amino acid substitutions. We have developed an API that returns mouse variants and strains in MoG+ as counterparts to ClinVar variants within the gene region specified by an HGNC gene symbol. The API URL is https://sparql-support.dbcls.jp/rest/human_variant_to_mouse, where queries to TogoVar, TogoDX, Ensembl, MoG+, and UCSC are called in a SPARQList. To reproduce Figure 1, please visit the following link:
+https://sparql-support.dbcls.jp/rest/api/human_variant_to_mouse?hgnc=ABCA12&clinvar=true&strain_match=true.
 
 ![Example of an API response for the human ABCA12 gene](./Figure1.png)
-
-Figure 1: Example of an API response for the human ABCA12 gene
-
-To reproduce Figure 1, please visit the following link:
-https://sparql-support.dbcls.jp/rest/api/human_variant_to_mouse?hgnc=ABCA12&clinvar=true&strain_match=true.
 
 
 # Future work
