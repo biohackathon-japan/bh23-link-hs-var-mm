@@ -1,5 +1,5 @@
 ---
-title: 'BioHackJP 2023 Report R1: linking human genetic variants to their mouse counterparts'
+title: 'BioHackJP 2023 Report R1: Linking human genome variations to their mouse counterparts for identifying disease model mouse strains with human genome variations'
 title_short: 'BioHackJP 2023 LINK-HS-VAR-MM'
 tags:
   - Human Disease Model Mouse
@@ -38,22 +38,26 @@ authors_short: Mitsuhashi, N. \emph{et al.}
 
 # Background
 
-Experimental mice are widely used in human disease studies. To select an experimental mouse model appropriately, it is crucial to identify mouse variants with the same effect as disease-related variants in humans. Homologous human and mouse genes have been identified and shared in databases [1] [2]. At the genetic variant level, however, the explicit relationships between human variants and their mouse counterparts have yet to be included in these databases. A previous study successfully mapped human pathogenic variants mostly found in conserved coding regions to orthologous positions in the cow and pig genomes [3].
-
-In BH2023, we aimed to map human pathogenic variants to orthologous positions in the mouse genome based on the sequence similarity between the two species. The mapping results will be provided as the links between a comprehensive human variation database TogoVar [4] and a model mouse genome database MoG+ [5].
-
+Experimental mice are widely used in human disease studies. Since the inception of mouse genetic research, hundreds of diverse strains have been established for biomedical research. In disease model mouse strains, information on genomic variations is essential for elucidating the relationship between haplotypes and disease susceptibility. To select a disease model mouse appropriately, it is crucial to identify mouse variants with the same effect as disease-causing variants in humans. Homologous human and mouse genes have been identified and shared in integrated human and model organism databases [1] [2]. At the genetic variant level, however, the explicit relationships between human variants and their mouse counterparts have yet to be included in these databases. A previous study successfully mapped human pathogenic variants mostly found in conserved coding regions to orthologous positions in the cow and pig genomes [3]. In BH2023, we aimed to map human pathogenic variants to orthologous positions in the mouse genome based on the sequence similarity between the two species. 
 
 # Outcomes
 
-We have developed an API that returns mouse variants and strains in MoG+ as counterparts to ClinVar variants within the gene region specified by an HGNC gene symbol. For example, users can obtain a list of mouse variants linked to ClinVar variants in the human PAX4 gene by using the following link: https://sparql-support.dbcls.jp/rest/api/human_variant_to_mouse?hgnc_symbol=PAX4&clinvar=true. 
+Using the reference sequences of humans and mice, we compared the regions encoding proteins of homologous genes. First, we focused on nucleotide variants involved in amino acid substitutions. We have developed an API that returns mouse variants and strains in MoG+ as counterparts to ClinVar variants within the gene region specified by an HGNC gene symbol. The API URL is https://sparql-support.dbcls.jp/rest/human_variant_to_mouse, where queries to TogoVar,  TogoDX,  Ensembl, MoG+, and UCSC are called in a SPARQList. 
+
+![Example of an API response for the human ABCA12 gene](./Figure1.png)
+
+Figure 1: Example of an API response for the human ABCA12 gene
+https://sparql-support.dbcls.jp/rest/api/human_variant_to_mouse?hgnc=ABCA12&clinvar=true&strain_match=true.
+
 
 # Future work
 
-We will evaluate the mapping accuracy by comparing annotations of human variants with those of their corresponding mouse variants. The annotations include substitution patterns of amino acids and molecular functions. 
+We will evaluate the mapping accuracy by comparing annotations of human variants with those of their corresponding mouse variants. The annotations include substitution patterns of amino acids and molecular functions. The mapping results will be presented as the links between a comprehensive human variation database TogoVar [4] and a model mouse genome database MoG+ [5].
+In the future, we will not only focus on comparisons based solely on the homology of nucleotide sequences encoding proteins in humans and mice, but also take into consideration the functionality of cis-elements involved in gene expression regulation, considering repetitive elements. Additionally, we will prioritize genomic variants of disease-causing genes based on literature information and the results of large-scale gene knockout projects in mice. The goal is to develop an information infrastructure for accurately selecting the most suitable mouse model strains for human disease research.
 
 ## Acknowledgements
 
-We would like to thank the fellow participants at BioHackathon 2023 for their collaboration and constructive advice, which greatly influenced our project. We are grateful to the organizers for providing this platform and the developers of open source language models. Special thanks to our mentors, advisors, and colleagues for their guidance and support. Without their contributions, our project in linked data standardization with LLMs in bioinformatics would not have been possible.
+We would like to thank the fellow participants at BioHackathon 2023 for their collaboration and constructive advice, which greatly influenced our project. We are grateful to the organizers for providing this platform. Special thanks to our mentors, advisors, and colleagues for their guidance and support. Without their contributions, our project in linked data standardization with LLMs in bioinformatics would not have been possible.
 
 ## References
 
