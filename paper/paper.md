@@ -47,6 +47,8 @@ Using the reference sequences of humans and mice, we compared the regions encodi
 ![Example of an API response for the human ABCA12 gene](./Figure1.png)
 
 Figure 1: Example of an API response for the human ABCA12 gene
+
+To reproduce Figure 1, please visit the following link:
 https://sparql-support.dbcls.jp/rest/api/human_variant_to_mouse?hgnc=ABCA12&clinvar=true&strain_match=true.
 
 
@@ -57,7 +59,7 @@ In the future, we will not only focus on comparisons based solely on the homolog
 
 ## Acknowledgements
 
-We would like to thank the fellow participants at BioHackathon 2023 for their collaboration and constructive advice, which greatly influenced our project. We are grateful to the organizers for providing this platform. Special thanks to our mentors, advisors, and colleagues for their guidance and support. Without their contributions, our project in linked data standardization with LLMs in bioinformatics would not have been possible.
+We would like to thank the fellow participants at BioHackathon 2023 for their collaboration and constructive advice, which greatly influenced our project. We are grateful to the organizers for providing this platform. Special thanks to the MoG+ and TogoVar development team members for their guidance and support. Without their contributions, our project would not have been possible.
 
 ## References
 
