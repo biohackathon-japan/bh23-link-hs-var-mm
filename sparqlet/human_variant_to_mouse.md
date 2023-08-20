@@ -1,13 +1,13 @@
-# Convert human vriants to mouse genome positions
+# Convert human variants to mouse genome positions
 
-* Search human variants with VEP annotation and Clinver significance (TogoVar RDF)
+* Search human variants with VEP annotation and ClinVar significance (TogoVar RDF)
 * Human Ensembl transcript to mouse Ensembl transcript via Homologene (Homologene RDF)
   * Convert Ensembl transcript from/to NCBI gene (TogoID RDF)
-* Alaign by ggsearch (global alignment) (local API)
+* Align by ggsearch (global alignment) (local API)
   * Get CDS (Ensembl API)
 * Calculate mouse genome (GRCm39/mm39) position
   * Get exon-intron structure and translation info (Ensembl API)
-* Get mouse strain varants (GRCm38/mm10) (MoG+ API) and compare
+* Get mouse strain variants (GRCm38/mm10) (MoG+ API) and compare
   * Convert from/to GRCm39/mm39 (UCSC API)
 
 ## Parameters
@@ -15,7 +15,7 @@
 * `hgnc` : id or symbol
   * default: ABCA12
   * example: 14637
-* `clinvar` : filter by Clinvar
+* `clinvar` : filter by ClinVar
   * default: true
 * `strain_match` : human-alt mouse-strain-ref match
   * default: true
