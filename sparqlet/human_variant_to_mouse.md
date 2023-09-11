@@ -1,21 +1,21 @@
 # Convert human variants to mouse genome positions
 
-* Search human variants with VEP annotation and ClinVar significance (TogoVar RDF)
+* Search human variants with VEP annotation and Clinvar significance (TogoVar RDF)
 * Human Ensembl transcript to mouse Ensembl transcript via Homologene (Homologene RDF)
   * Convert Ensembl transcript from/to NCBI gene (TogoID RDF)
-* Align by ggsearch (global alignment) (local API)
+* Alaign by ggsearch (global alignment) (local API)
   * Get CDS (Ensembl API)
 * Calculate mouse genome (GRCm39/mm39) position
   * Get exon-intron structure and translation info (Ensembl API)
-* Get mouse strain variants (GRCm38/mm10) (MoG+ API) and compare
+* Get mouse strain varants (GRCm38/mm10) (MoG+ API) and compare
   * Convert from/to GRCm39/mm39 (UCSC API)
 
 ## Parameters
 
 * `hgnc` : id or symbol
-  * default: ABCA12
+  * default: ABCA4
   * example: 14637
-* `clinvar` : filter by ClinVar
+* `clinvar` : filter by Clinvar
   * default: true
 * `strain_match` : human-alt mouse-strain-ref match
   * default: true
@@ -158,10 +158,10 @@ WHERE {
 }
 ```
 
+
 ## `sequence`
 ```javascript
 async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
-  if (strain_match.match(/^false$/)) strain_match = false;
   const human_enst = human_ncbigene.results.bindings[0].enst.value.split(/\//)[4];
   const mouse_enst = mouse_enst_pre.results.bindings[0].id.value.split(/\//)[4];
   const api = "https://rest.ensembl.org";
@@ -178,9 +178,9 @@ async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
     }
   };
 
-  const res = await fetch("https://sparql-support.dbcls.jp/api/ggsearch", options).then(d=>d.text());
-  console.log(res);
-  const lines = res.split(/\n/);
+  const align = await fetch("https://sparql-support.dbcls.jp/api/ggsearch", options).then(d=>d.text());
+  console.log(align);
+  
   const hsa_info = await fetch(api + "/lookup/id/" + human_enst + "?expand=1&content-type=application/json").then(d=>d.json());
   const mmu_info = await fetch(api + "/lookup/id/" + mouse_enst + "?expand=1&content-type=application/json").then(d=>d.json());
   console.log(hsa_info);
@@ -198,15 +198,17 @@ async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
     let lift_array = lift_res.split(/\s+/);
     lift_array[0] = lift_array[0].replace(/chr/, '');
     //////
-    
-    //options.body += "chrName=" + mmu_info.seq_region_name + "&chrStart=" + mmu_info.start + "&chrEnd=" + mmu_info.end + "&strainNoSlct=refGenome&strainNoSlct=msmv4_sq&strainNoSlct=jf1v3&strainNoSlct=kjrv1&strainNoSlct=swnv1&strainNoSlct=chdv1&strainNoSlct=njlv1&strainNoSlct=blg2v1&strainNoSlct=hmiv1&strainNoSlct=bfmv1&strainNoSlct=pgn2v1&strainNoSlct=129P2_OlaHsd&strainNoSlct=129S1_SvImJ&strainNoSlct=129S5SvEvBrd&strainNoSlct=A_J&strainNoSlct=AKR_J&strainNoSlct=BALB_cJ&strainNoSlct=BTBR_T%2B_Itpr3tf_J&strainNoSlct=BUB_BnJ&strainNoSlct=C3H_HeH&strainNoSlct=C3H_HeJ&strainNoSlct=C57BL_10J&strainNoSlct=C57BL_6NJ&strainNoSlct=C57BR_cdJ&strainNoSlct=C57L_J&strainNoSlct=C58_J&strainNoSlct=CAST_EiJ&strainNoSlct=CBA_J&strainNoSlct=DBA_1J&strainNoSlct=DBA_2J&strainNoSlct=FVB_NJ&strainNoSlct=I_LnJ&strainNoSlct=KK_HiJ&strainNoSlct=LEWES_EiJ&strainNoSlct=LP_J&strainNoSlct=MOLF_EiJ&strainNoSlct=NOD_ShiLtJ&strainNoSlct=NZB_B1NJ&strainNoSlct=NZO_HlLtJ&strainNoSlct=NZW_LacJ&strainNoSlct=PWK_PhJ&strainNoSlct=RF_J&strainNoSlct=SEA_GnJ&strainNoSlct=SPRET_EiJ&strainNoSlct=ST_bJ&strainNoSlct=WSB_EiJ&strainNoSlct=ZALENDE_EiJ&seqType=genome&chrName=5&geneNameSearchText=&index=submit&presentType=dwnld"
-    options.body += "chrName=" + lift_array[0] + "&chrStart=" + parseInt(lift_array[1]) + "&chrEnd=" + parseInt(lift_array[2]) + "&strainNoSlct=refGenome&strainNoSlct=msmv4_sq&strainNoSlct=jf1v3&strainNoSlct=kjrv1&strainNoSlct=swnv1&strainNoSlct=chdv1&strainNoSlct=njlv1&strainNoSlct=blg2v1&strainNoSlct=hmiv1&strainNoSlct=bfmv1&strainNoSlct=pgn2v1&strainNoSlct=129P2_OlaHsd&strainNoSlct=129S1_SvImJ&strainNoSlct=129S5SvEvBrd&strainNoSlct=A_J&strainNoSlct=AKR_J&strainNoSlct=BALB_cJ&strainNoSlct=BTBR_T%2B_Itpr3tf_J&strainNoSlct=BUB_BnJ&strainNoSlct=C3H_HeH&strainNoSlct=C3H_HeJ&strainNoSlct=C57BL_10J&strainNoSlct=C57BL_6NJ&strainNoSlct=C57BR_cdJ&strainNoSlct=C57L_J&strainNoSlct=C58_J&strainNoSlct=CAST_EiJ&strainNoSlct=CBA_J&strainNoSlct=DBA_1J&strainNoSlct=DBA_2J&strainNoSlct=FVB_NJ&strainNoSlct=I_LnJ&strainNoSlct=KK_HiJ&strainNoSlct=LEWES_EiJ&strainNoSlct=LP_J&strainNoSlct=MOLF_EiJ&strainNoSlct=NOD_ShiLtJ&strainNoSlct=NZB_B1NJ&strainNoSlct=NZO_HlLtJ&strainNoSlct=NZW_LacJ&strainNoSlct=PWK_PhJ&strainNoSlct=RF_J&strainNoSlct=SEA_GnJ&strainNoSlct=SPRET_EiJ&strainNoSlct=ST_bJ&strainNoSlct=WSB_EiJ&strainNoSlct=ZALENDE_EiJ&seqType=genome&chrName=5&geneNameSearchText=&index=submit&presentType=dwnld"
-    const mogp = await fetch("https://molossinus.brc.riken.jp/mogplus/variantTable/", options).then(d=>d.text());
+
+    //const mog_body += "chrName=" + mmu_info.seq_region_name + "&chrStart=" + mmu_info.start + "&chrEnd=" + mmu_info.end + "&strainNoSlct=refGenome&strainNoSlct=msmv4_sq&strainNoSlct=jf1v3&strainNoSlct=kjrv1&strainNoSlct=swnv1&strainNoSlct=chdv1&strainNoSlct=njlv1&strainNoSlct=blg2v1&strainNoSlct=hmiv1&strainNoSlct=bfmv1&strainNoSlct=pgn2v1&strainNoSlct=129P2_OlaHsd&strainNoSlct=129S1_SvImJ&strainNoSlct=129S5SvEvBrd&strainNoSlct=A_J&strainNoSlct=AKR_J&strainNoSlct=BALB_cJ&strainNoSlct=BTBR_T%2B_Itpr3tf_J&strainNoSlct=BUB_BnJ&strainNoSlct=C3H_HeH&strainNoSlct=C3H_HeJ&strainNoSlct=C57BL_10J&strainNoSlct=C57BL_6NJ&strainNoSlct=C57BR_cdJ&strainNoSlct=C57L_J&strainNoSlct=C58_J&strainNoSlct=CAST_EiJ&strainNoSlct=CBA_J&strainNoSlct=DBA_1J&strainNoSlct=DBA_2J&strainNoSlct=FVB_NJ&strainNoSlct=I_LnJ&strainNoSlct=KK_HiJ&strainNoSlct=LEWES_EiJ&strainNoSlct=LP_J&strainNoSlct=MOLF_EiJ&strainNoSlct=NOD_ShiLtJ&strainNoSlct=NZB_B1NJ&strainNoSlct=NZO_HlLtJ&strainNoSlct=NZW_LacJ&strainNoSlct=PWK_PhJ&strainNoSlct=RF_J&strainNoSlct=SEA_GnJ&strainNoSlct=SPRET_EiJ&strainNoSlct=ST_bJ&strainNoSlct=WSB_EiJ&strainNoSlct=ZALENDE_EiJ&seqType=genome&chrName=5&geneNameSearchText=&index=submit&presentType=dwnld"
+    const mog_body = "chrName=" + lift_array[0] + "&chrStart=" + parseInt(lift_array[1]) + "&chrEnd=" + parseInt(lift_array[2]) + "&strainNoSlct=refGenome&strainNoSlct=msmv4_sq&strainNoSlct=jf1v3&strainNoSlct=kjrv1&strainNoSlct=swnv1&strainNoSlct=chdv1&strainNoSlct=njlv1&strainNoSlct=blg2v1&strainNoSlct=hmiv1&strainNoSlct=bfmv1&strainNoSlct=pgn2v1&strainNoSlct=129P2_OlaHsd&strainNoSlct=129S1_SvImJ&strainNoSlct=129S5SvEvBrd&strainNoSlct=A_J&strainNoSlct=AKR_J&strainNoSlct=BALB_cJ&strainNoSlct=BTBR_T%2B_Itpr3tf_J&strainNoSlct=BUB_BnJ&strainNoSlct=C3H_HeH&strainNoSlct=C3H_HeJ&strainNoSlct=C57BL_10J&strainNoSlct=C57BL_6NJ&strainNoSlct=C57BR_cdJ&strainNoSlct=C57L_J&strainNoSlct=C58_J&strainNoSlct=CAST_EiJ&strainNoSlct=CBA_J&strainNoSlct=DBA_1J&strainNoSlct=DBA_2J&strainNoSlct=FVB_NJ&strainNoSlct=I_LnJ&strainNoSlct=KK_HiJ&strainNoSlct=LEWES_EiJ&strainNoSlct=LP_J&strainNoSlct=MOLF_EiJ&strainNoSlct=NOD_ShiLtJ&strainNoSlct=NZB_B1NJ&strainNoSlct=NZO_HlLtJ&strainNoSlct=NZW_LacJ&strainNoSlct=PWK_PhJ&strainNoSlct=RF_J&strainNoSlct=SEA_GnJ&strainNoSlct=SPRET_EiJ&strainNoSlct=ST_bJ&strainNoSlct=WSB_EiJ&strainNoSlct=ZALENDE_EiJ&seqType=genome&chrName=5&geneNameSearchText=&index=submit&presentType=dwnld"
+    console.log(mog_body);
+    const mogp = await fetch("https://molossinus.brc.riken.jp/mogplus/variantTable/?" + mog_body).then(d=>d.text());
     console.log(mogp);
     const mogp_r = mogp.split(/\n/);
     let pos_list = mogp_r[0].split(/\t/);
+    console.log(pos_list);
     if (!pos_list[1]) return [];
-
+    
     ////// GRCm38/mm10 > GRCm39/mm39 LiftOver 
     lift_body = "hglft_fromDb=mm10&hglft_toDb=mm39&hglft_minMatch=0.95&hglft_userData=";
     for (let i = 1; i < pos_list.length; i++){
@@ -220,9 +222,8 @@ async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
     for (let i = 0; i < lift_array.length; i++) {
       let tmp = lift_array[i].split(/\s+/);
       pos_list[i+1] = tmp[1]; 
-    }
+    } 
     //////
-
     const ref_list = mogp_r[1].split(/\t/);
     for (let i = 2; i < mogp_r.length; i++) {
       const alt = mogp_r[i].split(/\t/);
@@ -235,77 +236,84 @@ async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
       }
     }
   }
-  
+
   let result = [];
+  let isoform = {hsa: {}, mmu: {}};
+  let alignment = {};
   const re = new RegExp(human_enst);
   for (let i = 0; i < var_info.results.bindings.length; i++) {
     if (var_info.results.bindings[i].hgvsc.value.match(re)) {
       let pick_info = var_info.results.bindings[i];
-
       let pos = pick_info.hgvsc.value.match(/:c\.([-\*]*\d+)/)[1];
       let vep_delta = 0;
       if (pick_info.hgvsc.value.match(/:c\.\d+[\+-]\d+/)) vep_delta = parseInt(pick_info.hgvsc.value.match(/:c\.\d+([\+-]\d+)/)[1]);
 
-  let hsa_cds_pos = 0;
-  let mmu_cds_pos = 0;
-  let ref_line_pos = 0;
-  let alt_line_pos = 0;
-  let r_nuc;
-  let a_nuc;
   let hgvsp = pick_info.hgvsp ?? false;
   hgvsp = hgvsp.value ?? false;
   let interpretation = pick_info.interpretation ?? false;
   interpretation = interpretation.value ?? false;
-      
+
+  function countAlignment(align, pos, vep_delta) {
+    const lines = align.split(/\n/);
+    let hsa_aln_pos = 0;
+    let mmu_aln_pos = 0;
+    let ref_line_pos = 0;
+    let alt_line_pos = 0;
+    let hsa_nuc = "-";
+    let mmu_nuc = "-";
+    // count variant position in the sequence alignment
+    pos = parseInt(pos);
+    for (let l of lines) {
+      if (l.match(/global\/global \(N-W\).+overlap \(\d+-\d+:\d+-\d+\)/)) {
+        let tmp = l.match(/global\/global \(N-W\).+overlap \((\d+)-\d+:(\d+)-\d+\)/);
+        hsa_aln_pos = tmp[1] - 1;
+        mmu_aln_pos = tmp[2] - 1;	
+      }
+      if (l.match(/^ENST/)) {
+        let seq = l.match(/^ENST.+ +(.+)/)[1];
+        if (hsa_aln_pos + seq.replace(/-/g, "").length < pos) {
+          hsa_aln_pos += seq.replace(/-/g, "").length;
+        } else {
+          let nucs = seq.split('');
+          for (let n of nucs) {
+            ref_line_pos++;
+            if (n.match(/[ATGCN]/)) hsa_aln_pos++;
+            if (hsa_aln_pos == pos) {
+              if (vep_delta == 0) hsa_nuc = n;
+              break;
+            }
+          }
+        } 
+      }
+      if (l.match(/^ENSMU/)) {
+        let seq = l.match(/^ENSMU.+ +(.+)/)[1];
+        if (ref_line_pos == 0) {
+          mmu_aln_pos += seq.replace(/-/g, "").length;
+        } else {
+          let nucs = seq.split('');
+          for (let n of nucs) {
+            alt_line_pos++;
+            if (n.match(/[ATGCN]/)) mmu_aln_pos++;
+            if (alt_line_pos == ref_line_pos) {
+              if (vep_delta == 0) mmu_nuc = n;
+              break;
+            }
+          }
+        } 
+      }
+      if (alt_line_pos && ref_line_pos == alt_line_pos) break;
+    }
+    return [hsa_aln_pos, mmu_aln_pos, hsa_nuc, mmu_nuc];
+  }
+
   if (pos.match(/-/) || pos.match(/\*/)) {
     vep_delta = parseInt(pos.replace(/\*/, ""));
     if (pos < 0) pos = 1;
     else pos = (hsa_info.Translation.length + 1) * 3;
   }
-  pos = parseInt(pos);
-  for (let l of lines) {
-    if (l.match(/global\/global \(N-W\).+overlap \(\d+-\d+:\d+-\d+\)/)) {
-      let tmp = l.match(/global\/global \(N-W\).+overlap \((\d+)-\d+:(\d+)-\d+\)/);
-      hsa_cds_pos = tmp[1] - 1;
-      mmu_cds_pos = tmp[2] - 1;	
-    }
-    if (l.match(/^ENST/)) {
-      let seq = l.match(/^ENST.+ +(.+)/)[1];
-      if (hsa_cds_pos + seq.replace(/-/g, "").length < pos) {
-        hsa_cds_pos += seq.replace(/-/g, "").length;
-      } else {
-        let nucs = seq.split('');
-        for (let n of nucs) {
-          ref_line_pos++;
-          if (n.match(/[ATGCN]/)) hsa_cds_pos++;
-          if (hsa_cds_pos == pos) {
-            r_nuc = n;
-            if (vep_delta != 0) r_nuc = "-";
-            break;
-          }
-        }
-      } 
-    }
-    if (l.match(/^ENSMU/)) {
-      let seq = l.match(/^ENSMU.+ +(.+)/)[1];
-      if (ref_line_pos == 0) {
-        mmu_cds_pos += seq.replace(/-/g, "").length;
-      } else {
-        let nucs = seq.split('');
-        for (let n of nucs) {
-          alt_line_pos++;
-          if (n.match(/[ATGCN]/)) mmu_cds_pos++;
-          if (alt_line_pos == ref_line_pos) {
-            a_nuc = n;
-            if (vep_delta != 0) a_nuc = "-";
-            break;
-          }
-        }
-      } 
-    }
-    if (alt_line_pos && ref_line_pos == alt_line_pos) break;
-  }
+  let [hsa_aln_pos, mmu_aln_pos, hsa_nuc, mmu_nuc] = countAlignment(align, pos, vep_delta);
 
+  // calcurete human genome position (for check)
   let hsa_pos = 0;
   let cds_pos_h = 0;
   if (hsa_info.strand == 1) {
@@ -313,11 +321,11 @@ async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
     for (let i = 0; i < hsa_info.Exon.length; i++) {
       const exon = hsa_info.Exon[i];
       if (exon.end < hsa_pos) continue;
-      if (exon.end - hsa_pos < hsa_cds_pos - cds_pos_h) {
+      if (exon.end - hsa_pos < hsa_aln_pos - cds_pos_h) {
         cds_pos_h += exon.end - hsa_pos;
         hsa_pos = hsa_info.Exon[i+1].start - 1;
       } else {
-        hsa_pos += hsa_cds_pos - cds_pos_h;
+        hsa_pos += hsa_aln_pos - cds_pos_h;
         break;
       }
     }
@@ -326,16 +334,16 @@ async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
     for (let i = 0; i < hsa_info.Exon.length; i++) {
       const exon = hsa_info.Exon[i];
       if (hsa_pos < exon.start) continue;
-      if (hsa_pos - exon.start < hsa_cds_pos - cds_pos_h) {
+      if (hsa_pos - exon.start < hsa_aln_pos - cds_pos_h) {
         cds_pos_h += hsa_pos - exon.start;
         hsa_pos = hsa_info.Exon[i+1].end + 1;
       } else {
-        hsa_pos -= hsa_cds_pos - cds_pos_h;
+        hsa_pos -= hsa_aln_pos - cds_pos_h;
         break;
       }
     }
   }
-
+  // calcurete mouse genome position
   let mmu_pos = 0;
   let cds_pos_m = 0;
   if (mmu_info.strand == 1) {
@@ -343,11 +351,11 @@ async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
     for (let i = 0; i < mmu_info.Exon.length; i++) {
       const exon = mmu_info.Exon[i];
       if (exon.end < mmu_pos) continue;
-      if (exon.end - mmu_pos < mmu_cds_pos - cds_pos_m) {
+      if (exon.end - mmu_pos < mmu_aln_pos - cds_pos_m) {
         cds_pos_m += exon.end - mmu_pos;
         mmu_pos = mmu_info.Exon[i+1].start - 1;
       } else {
-        mmu_pos += mmu_cds_pos - cds_pos_m;
+        mmu_pos += mmu_aln_pos - cds_pos_m;
         break;
       }
     }
@@ -356,11 +364,11 @@ async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
     for (let i = 0; i < mmu_info.Exon.length; i++) {
       const exon = mmu_info.Exon[i];
       if (mmu_pos < exon.start) continue;
-      if (mmu_pos - exon.start < mmu_cds_pos - cds_pos_m) {
+      if (mmu_pos - exon.start < mmu_aln_pos - cds_pos_m) {
         cds_pos_m += mmu_pos - exon.start;
         mmu_pos = mmu_info.Exon[i+1].end + 1;
       } else {
-        mmu_pos -= mmu_cds_pos - cds_pos_m;
+        mmu_pos -= mmu_aln_pos - cds_pos_m;
         break;
       }
     }
@@ -381,14 +389,14 @@ async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
       chromosome: hsa_info.seq_region_name,
       position: hsa_pos + (vep_delta * hsa_info.strand),
       strand: hsa_info.strand,
-      ref: r_nuc
+      ref: hsa_nuc
     },
     mouse: {
       assembly: mmu_info.assembly_name,
       chromosome: mmu_info.seq_region_name,
       position: mmu_pos,
-      srrand: mmu_info.strand,
-      ref: a_nuc,
+      strand: mmu_info.strand,
+      ref: mmu_nuc,
       strain: mmu_var[vs] || false
     }
   });
