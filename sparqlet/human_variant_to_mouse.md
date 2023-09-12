@@ -1,6 +1,6 @@
-# Convert human vriants to mouse genome positions
+# Convert human variants to mouse genome positions
 
-* Search human variants with VEP annotation and Clinver significance (TogoVar RDF)
+* Search human variants with VEP annotation and ClinVar significance (TogoVar RDF)
 * Human Ensembl transcript to mouse Ensembl transcript via Homologene (Homologene RDF)
   * Convert Ensembl transcript from/to NCBI gene (TogoID RDF)
 * Alaign by ggsearch (global alignment) (local API)
