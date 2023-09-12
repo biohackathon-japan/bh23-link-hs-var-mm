@@ -1,6 +1,6 @@
-# Convert human variants to mouse genome positions
+# Convert human vriants to mouse genome positions
 
-* Search human variants with VEP annotation and Clinvar significance (TogoVar RDF)
+* Search human variants with VEP annotation and Clinver significance (TogoVar RDF)
 * Human Ensembl transcript to mouse Ensembl transcript via Homologene (Homologene RDF)
   * Convert Ensembl transcript from/to NCBI gene (TogoID RDF)
 * Alaign by ggsearch (global alignment) (local API)
@@ -70,7 +70,7 @@ WHERE {
   GRAPH <http://togovar.biosciencedbc.jp/so> {
     ?cons_type rdfs:label ?cons .
   }
-{{#if id.clinvar}}
+{{#unless id.clinvar}}  OPTIONAL { {{/unless}}
   GRAPH <http://togovar.biosciencedbc.jp/variant/annotation/clinvar> {
     ?togovar dct:identifier ?var_id .
     BIND(IRI(CONCAT("http://ncbi.nlm.nih.gov/clinvar/variation/", ?var_id)) AS ?clinvar)
@@ -78,7 +78,7 @@ WHERE {
   GRAPH <http://togovar.biosciencedbc.jp/clinvar> {
     ?clinvar cvo:interpreted_record/cvo:rcv_list/cvo:rcv_accession/cvo:interpretation ?interprt .
   }
-{{/if}}
+{{#unless id.clinvar}}  } {{/unless}}
 }
 ```
 
@@ -88,7 +88,8 @@ WHERE {
   function uniq(array) {
     return Array.from(new Set(array));
   }
-  return "enst:" + uniq(var_info.results.bindings.map(d=>d.hgvsc.value.split(/\./)[0])).join(" enst:");
+  if (!var_info.results.bindings[0]) return { skip: 1 }
+  return {code: "enst:" + uniq(var_info.results.bindings.map(d=>d.hgvsc.value.split(/\./)[0])).join(" enst:")};
 }
 ```
 
@@ -102,7 +103,8 @@ PREFIX enst: <http://identifiers.org/ensembl/>
 PREFIX ncbigene: <http://identifiers.org/ncbigene/>
 SELECT DISTINCT ?id ?enst
 WHERE {
-  VALUES ?enst { {{ensts}} }
+  {{#unless ensts.skip}}
+  VALUES ?enst { {{ensts.code}} }
   {
     GRAPH <http://togoid.dbcls.jp/graph/ensembl_transcript-ncbigene> {
       ?enst [] ?id .
@@ -112,6 +114,7 @@ WHERE {
       ?id [] ?enst .
     }  
   }
+  {{/unless}}
 }
 ```
 
@@ -129,10 +132,12 @@ SELECT ?id
 FROM <http://rdf.integbio.jp/dataset/togosite/homologene/ontology>
 FROM <http://rdf.integbio.jp/dataset/togosite/homologene/data>
 WHERE {
+  {{#if human_ncbigene.results.bindings}}
   [] orth:inDataset homologene: ;
      orth:hasHomologousMember <{{human_ncbigene.results.bindings.0.id.value}}> ;
      orth:hasHomologousMember ?id .
   ?id orth:taxon taxid:10090 .
+  {{/if}}
 }
 ```
 
@@ -146,6 +151,7 @@ PREFIX enst: <http://identifiers.org/ensembl/>
 PREFIX ncbigene: <http://identifiers.org/ncbigene/>
 SELECT DISTINCT ?id
 WHERE {
+  {{#if mouse_ncbigene.results.bindings}}
   {
     GRAPH <http://togoid.dbcls.jp/graph/ensembl_transcript-ncbigene> {
       ?id [] <{{mouse_ncbigene.results.bindings.0.id.value}}> .
@@ -155,6 +161,7 @@ WHERE {
       <{{mouse_ncbigene.results.bindings.0.id.value}}> [] ?id .
     }  
   }
+  {{/if}}
 }
 ```
 
@@ -162,6 +169,7 @@ WHERE {
 ## `sequence`
 ```javascript
 async ({strain_match, var_info, human_ncbigene, mouse_enst_pre})=>{
+  if (!human_ncbigene.results.bindings[0].enst || !mouse_enst_pre.results.bindings[0].id) return [];
   const human_enst = human_ncbigene.results.bindings[0].enst.value.split(/\//)[4];
   const mouse_enst = mouse_enst_pre.results.bindings[0].id.value.split(/\//)[4];
   const api = "https://rest.ensembl.org";
