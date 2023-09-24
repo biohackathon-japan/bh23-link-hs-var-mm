@@ -42,52 +42,54 @@ Experimental mice are widely used in human disease studies. Since the inception 
 
 # Outcomes
 
-Using the reference sequences of humans and mice, we compared the regions encoding proteins of homologous genes. First, we focused on nucleotide variants involved in amino acid substitutions. We have developed an API that returns mouse variants and strains in MoG+ as counterparts to ClinVar variants located within the gene region specified by an HGNC gene symbol. Target human variants can be limited to variants with ClinVar significance. The API runs on a SPARQList, which is a REST API server, and the data processing workflow is described in Table 1.
+Using the reference sequences of humans and mice, we compared the regions encoding proteins of homologous genes. First, we focused on nucleotide variants involved in amino acid substitutions. We have developed an API that returns mouse variants and strains in the MoG+ database [@takada2022] as counterparts to ClinVar variants located within the gene region specified by an HGNC gene identifier or symbol. Target human variants can be limited to variants with ClinVar significance. An example of the API response is shown in Figure 1.
 
-|Step|Description|Data sources, tools and APIs|
-| -------- | -------- | ----- |
-|1|Collect human variants located within the input gene region along with their positions in the coding sequences (CDS)  and ClinVar significance|TogoVar RDF, Ensembl Variant Effect Predictor (VEP) and ClinVar|
-|2|Identify the mouse counterpart gene for the input human gene|Homologene|
-|3|Obtain the CDS of both human and mouse|Ensembl API|
-|4|Perform a global alignment of the human and mouse CDS|ggsearch|
-|5|Locate mouse counterpart variants in the mouse CDS for each human variant collected in Step 1, based on the global alignment performed in Step 4||
-|6|Convert the local position within the CDS to the position in the mouse reference genome|Ensembl API|
-|7|Search for a MoG+ variant and strain name using the mouse reference genome position|MoG+ API|
-
-Table: A step-by-step description of the workflow of the API
-
-## Example of an API response for the human ABCA12 gene
-The API returns a mouse strain “HMIv1” that has a counterpart mouse variant of a human ABCA12 gene variant C > T at chr2:14937608 (GRCh38).
 ```
-{
-    "uri": "http://identifiers.org/hco/2/GRCh38#214937608-G-A",
-    "hgvsc": "ENST00000272895.12:c.7444C>T",
-    "hgvsp": "ENSP00000272895.7:p.Arg2482Ter",
-    "consequence": "stop_gained",
-    "significance": "Pathogenic",
+  {
+    "uri": "http://identifiers.org/hco/1/GRCh38#94080658-C-T",
+    "hgvsc": "ENST00000370225.4:c.919G>A",
+    "hgvsp": "ENSP00000359245.3:p.Gly307Ser",
+    "consequence": "missense_variant",
+    "significance": "Uncertain significance",
     "human": {
       "assembly": "GRCh38",
-      "chromosome": "2",
-      "position": 214937608,
+      "chromosome": "1",
+      "position": 94080658,
       "strand": -1,
-      "ref": "C"
+      "ref": "G"
     },
     "mouse": {
       "assembly": "GRCm39",
-      "chromosome": "1",
-      "position": 71286389,
-      "strand": -1,
-      "ref": "C",
+      "chromosome": "3",
+      "position": 121877561,
+      "strand": 1,
+      "ref": "G",
       "strain": [
-        "HMIv1"
+        "SPRET/EiJ"
       ]
     }
-  },
 ```
+Figure 1. Example of an API response for the human ABCA4 gene
+The API returns a mouse strain “SPRET/EiJ” that has a counterpart variant of a human ABCA4 gene variant C > T at chr1:94080658 (GRCh38).
+
+The API runs on a SPARQList, which is a REST API server, and the data processing workflow is described in Table 1.
+
+|Step|Description|Data sources, tools and APIs|
+| -------- | -------- | ----- |
+|1|Collect human variants located within the input gene region including their positions in an Ensembl transcript sequence and ClinVar significance.|TogoVar RDF [@mitsuhashi2022], Ensembl Variant Effect Predictor (VEP) [@mclaren2016a] and ClinVar|
+|2|Identify the mouse counterpart gene for the input human gene.|Homologene [@homologene]|
+|3|Obtain the coding sequences (CDS) of the human and mouse gene identified in Step 2.|Ensembl API [@ensembl]|
+|4|Perform a global alignment of the human and mouse CDS.|ggsearch [@ggseaarch]|
+|5|Locate mouse counterpart variants in the mouse CDS for each human variant collected in Step 1, based on the global alignment performed in Step 4.||
+|6|Convert the local position within the CDS to the position in the mouse reference genome.|Ensembl API|
+|7|Search for a variant and strain name in the MoG+ database  using the mouse reference genome position.|MoG+ API[@takada2022]|
+
+Table: Data processing workflow steps of the API
+The table explains how data was processed and which data sources, tools, and APIs were used at each stage in the API. Between these steps, TogoID [@ikeda2022]  was used for conversion between Ensembl transcript IDs and NCBI gene IDs. The workflow written in Markdown format is available at https://github.com/biohackathon-japan/bh23-map-hs-var-mm/blob/main/sparqlet/human_variant_to_mouse.md.
 
 # Future work
 
-We will work on the evaluation and improvement of the mapping accuracy. The human-mouse gene relationships were extracted only from the HomoloGene ortholog cluster. The use of other ortholog databases [citation needed?] along with HomoloGene can improve the accuracy. Additionally, the API currently covers only one-to-one relationships between human and mouse genes. Exploring one-to-N relationships is worthwhile because biologically significant mouse homologs related to immunity and olfaction have been reported. It is also important to assess alignment tools other than ggsearch. The mapping results will be presented as the links between a comprehensive human variation database TogoVar [4] and a model mouse genome database MoG+ [5].
+We will work on the evaluation and improvement of the mapping accuracy. The human-mouse gene relationships were extracted only from the HomoloGene ortholog cluster. The use of other ortholog databases along with HomoloGene can improve the accuracy. Additionally, the API currently covers only one-to-one relationships between human and mouse genes. Exploring one-to-N relationships is worthwhile because biologically significant mouse homologs related to immunity and olfaction have been reported. It is also important to assess alignment tools other than ggsearch. The mapping results will be presented as the links between a comprehensive human variation database TogoVar [@mitsuhashi2022] and a model mouse genome database MoG+ [@takada2022].
 
 In the future, we will not only focus on comparisons based solely on the homology of nucleotide sequences encoding proteins in humans and mice, but also take into consideration the functionality of cis-elements. Mapping variants in non-coding (UTR and intron) and intergenic regions is worthwhile but challenging. Additionally, we will prioritize genomic variants of disease-causing genes based on literature information and the results of large-scale gene knockout projects in mice. The goal is to develop an information infrastructure for accurately selecting the most suitable mouse model strains for human disease research.
 
