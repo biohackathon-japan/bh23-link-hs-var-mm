@@ -42,7 +42,7 @@ Experimental mice are widely used in human disease studies. Since the inception 
 
 # Outcomes
 
-Using the reference sequences of humans and mice, we compared the regions encoding proteins of homologous genes. First, we focused on nucleotide variants involved in amino acid substitutions. We have developed an API that returns mouse variants and strains in the MoG+ database [@takada2022] as counterparts to ClinVar [@landrum2020] variants located within the gene region specified by an HGNC gene identifier or symbol. Target human variants can be limited to variants with ClinVar significance. An example of the API response is shown in Figure 1.
+Using the reference sequences of humans and mice, we compared the regions encoding proteins of homologous genes. First, we focused on nucleotide variants involved in amino acid substitutions. We have developed an API that returns mouse variants and strains in the MoG+ database [@takada2022] as counterparts to ClinVar [@landrum2020] variants located within the gene region specified by an HGNC gene identifier or symbol. Target human variants can be limited to variants with ClinVar significance. An example of the API response is shown in Figure 1. The API returns a mouse strain “SPRET/EiJ” that has a counterpart variant of a human ABCA4 gene variant C > T at chr1:94080658 (GRCh38). 
 
 ```
   {
@@ -71,8 +71,6 @@ Using the reference sequences of humans and mice, we compared the regions encodi
 ```
 Figure 1: Example of an API response for the human ABCA4 gene
 
-The API returns a mouse strain “SPRET/EiJ” that has a counterpart variant of a human ABCA4 gene variant C > T at chr1:94080658 (GRCh38).
-
 The API runs on a SPARQList [@sparqlist2023], which is a REST API server, and the data processing workflow is described in Table 1.
 
 |Step|Description|Data sources, tools and APIs|
@@ -86,7 +84,6 @@ The API runs on a SPARQList [@sparqlist2023], which is a REST API server, and th
 |7|Search for a variant and strain name in the MoG+ database  using the mouse reference genome position.|MoG+ API|
 
 Table: Data processing workflow steps of the API
-
 The table explains how data was processed and which data sources, tools, and APIs were used at each stage in the API. Between these steps, TogoID [@ikeda2022]  was used for conversion between Ensembl transcript IDs and NCBI gene IDs. The workflow written in Markdown format is available at https://github.com/biohackathon-japan/bh23-map-hs-var-mm/blob/main/sparqlet/human_variant_to_mouse.md.
 
 # Future work
