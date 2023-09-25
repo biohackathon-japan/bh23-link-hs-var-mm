@@ -84,6 +84,7 @@ The API runs on a SPARQList [@sparqlist2023], which is a REST API server, and th
 |7|Search for a variant and strain name in the MoG+ database  using the mouse reference genome position.|MoG+ API|
 
 Table: Data processing workflow steps of the API
+
 The table explains how data was processed and which data sources, tools, and APIs were used at each stage in the API. Between these steps, TogoID [@ikeda2022]  was used for conversion between Ensembl transcript IDs and NCBI gene IDs. The workflow written in Markdown format is available at https://github.com/biohackathon-japan/bh23-map-hs-var-mm/blob/main/sparqlet/human_variant_to_mouse.md.
 
 # Future work
