@@ -77,7 +77,7 @@ The API runs on a SPARQList [@sparqlist2023], which is a REST API server, and th
 
 |Step|Description|Data sources, tools and APIs|
 | -- | -------- | ----- |
-|1|Collect human variants located within the input gene region including their positions in an Ensembl transcript sequence and ClinVar significance.|TogoVar RDF, Ensembl Variant Effect Predictor (VEP) [@mclaren2016a] and ClinVar [@landrum2020]|
+|1|Collect human variants located within the input gene region including their positions in an Ensembl transcript sequence and ClinVar significance.|TogoVar RDF, Ensembl Variant Effect Predictor (VEP) [@mclaren2016a] and ClinVar|
 |2|Identify the mouse counterpart gene for the input human gene.|Homologene|
 |3|Obtain the coding sequences (CDS) of the human and mouse gene identified in Step 2.|Ensembl API [@ensembl2023]|
 |4|Perform a global alignment of the human and mouse CDS.|ggsearch [@ggsearch2023]|
