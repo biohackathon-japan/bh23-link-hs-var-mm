@@ -85,7 +85,7 @@ The API runs on a SPARQList [@sparqlist2023], which is a REST API server, and th
 
 Table: Data processing workflow steps of the API
 
-The table explains how data was processed and which data sources, tools, and APIs were used at each stage in the API. Between these steps, TogoID [@ikeda2022]  was used for conversion between Ensembl transcript IDs and NCBI gene IDs. The workflow written in Markdown format is available at https://github.com/biohackathon-japan/bh23-map-hs-var-mm/blob/main/sparqlet/human_variant_to_mouse.md.
+The table explains how data was processed and which data sources, tools, and APIs were used at each step in the API. Between these steps, TogoID [@ikeda2022]  was used for conversion between Ensembl transcript IDs and NCBI gene IDs. The workflow written in Markdown format is available at https://github.com/biohackathon-japan/bh23-map-hs-var-mm/blob/main/sparqlet/human_variant_to_mouse.md.
 
 # Future work
 
