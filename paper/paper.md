@@ -81,7 +81,7 @@ The API runs on a SPARQList [@sparqlist2023], which is a REST API server, and th
 |4|Perform a global alignment of the human and mouse CDS.|ggsearch [@ggsearch2023]|
 |5|Locate mouse counterpart variants in the mouse CDS for each human variant collected in Step 1, based on the global alignment performed in Step 4.||
 |6|Convert the local position within the CDS to the position in the mouse reference genome.|Ensembl API|
-|7|Search for a variant and strain name in the MoG+ database  using the mouse reference genome position.|MoG+ API|
+|7|Search for a variant and strain name in the MoG+ database using the mouse reference genome position.|MoG+ API|
 
 Table: Data processing workflow steps of the API
 
