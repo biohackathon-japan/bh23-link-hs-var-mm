@@ -42,7 +42,7 @@ Experimental mice are widely used in human disease studies. Since the inception 
 
 # Outcomes
 
-Using the reference sequences of humans and mice, we compared the regions encoding proteins of homologous genes. First, we focused on nucleotide variants involved in amino acid substitutions. We have developed an API that returns mouse variants and strains in the MoG+ database [@takada2022] as counterparts to ClinVar [@landrum2020] variants located within the gene region specified by an HGNC gene identifier or symbol. Target human variants can be limited to variants with ClinVar significance. An example of the API response is shown in Figure 1. The API returns a mouse strain “SPRET/EiJ” that has a counterpart variant of a human ABCA4 gene variant C > T at chr1:94080658 (GRCh38). 
+Using the reference sequences of humans and mice, we compared the regions encoding proteins of homologous genes. First, we focused on nucleotide variants involved in amino acid substitutions. We developed an API that matches mouse variants from the MoG+ database [@takada2022] to human variants that are within gene regions defined by HGNC identifiers or symbols. Target human variants can be limited to variants with ClinVar [@landrum2020] significance. An example of the API response is shown in Figure 1. The API returns a mouse strain “SPRET/EiJ” that has a counterpart variant of a human ABCA4 gene variant C > T at chr1:94080658 (GRCh38).
 
 ```
   {
@@ -75,8 +75,8 @@ The API runs on a SPARQList [@sparqlist2023], which is a REST API server, and th
 
 |Step|Description|Data sources, tools and APIs|
 | -- | -------- | ----- |
-|1|Collect human variants located within the input gene region including their positions in an Ensembl transcript sequence and ClinVar significance.|TogoVar RDF, Ensembl Variant Effect Predictor (VEP) [@mclaren2016a] and ClinVar|
-|2|Identify the mouse counterpart gene for the input human gene.|Homologene|
+|1|Collect human variants that are located within the input gene region including positions in an Ensembl transcript sequence and ClinVar significance of the variants.|TogoVar RDF, Ensembl Variant Effect Predictor (VEP) [@mclaren2016a] and ClinVar|
+|2|Identify the mouse counterpart gene for the input human gene.|Homologene [@homologene2023]|
 |3|Obtain the coding sequences (CDS) of the human and mouse gene identified in Step 2.|Ensembl API [@ensembl2023]|
 |4|Perform a global alignment of the human and mouse CDS.|ggsearch [@ggsearch2023]|
 |5|Locate mouse counterpart variants in the mouse CDS for each human variant collected in Step 1, based on the global alignment performed in Step 4.||
@@ -85,13 +85,13 @@ The API runs on a SPARQList [@sparqlist2023], which is a REST API server, and th
 
 Table: Data processing workflow steps of the API
 
-The table explains how data was processed and which data sources, tools, and APIs were used at each step in the API. Between these steps, TogoID [@ikeda2022]  was used for conversion between Ensembl transcript IDs and NCBI gene IDs. The workflow written in Markdown format is available at https://github.com/biohackathon-japan/bh23-map-hs-var-mm/blob/main/sparqlet/human_variant_to_mouse.md.
+The table explains how data was processed and which data sources, tools, and APIs were used at each step in the API. Between these steps, TogoID [@ikeda2022] was used for conversion between Ensembl transcript IDs and NCBI gene IDs. The workflow written in Markdown format is available at https://github.com/biohackathon-japan/bh23-map-hs-var-mm/blob/main/sparqlet/human_variant_to_mouse.md.
 
 # Future work
 
-We will work on improving the precision of variant mapping. Currently, gene relationships between humans and mice are derived exclusively from the HomoloGene ortholog cluster [@homologene2023]. However, supplementing HomoloGene with other ortholog databases could potentially enhance accuracy. Our current system covers only one-to-one gene relationships between humans and mice. Nevertheless, it is valuable to explore one-to-many relationships, especially in understanding essential mouse homologs related to immunity and olfaction. Additionally, it is crucial to evaluate alignment tools beyond ggsearch. The outcomes of our variant mapping will be presented as links connecting the comprehensive human variation database, TogoVar [@mitsuhashi2022], and the model mouse genome database, MoG+ [@takada2022].
+We will work on improving the precision of variant mapping. Currently, gene relationships between humans and mice are derived exclusively from the HomoloGene ortholog cluster [@homologene2023]. However, supplementing HomoloGene with other ortholog databases could potentially enhance accuracy. Our current system covers only one-to-one gene relationships between humans and mice. Nevertheless, it is valuable to explore one-to-many relationships, especially in understanding essential mouse homologs related to immunity and olfaction. Additionally, it is crucial to evaluate alignment tools beyond ggsearch [@ggsearch2023]. The outcomes of our variant mapping will be presented as links connecting the comprehensive human variation database, TogoVar [@mitsuhashi2022], and the model mouse genome database, MoG+ [@takada2022].
 
-In the future, we will not only focus on comparisons based solely on the homology of nucleotide sequences encoding proteins in humans and mice, but also take into consideration the functionality of cis-elements. Mapping variants in non-coding (UTR and intron) and intergenic regions is worthwhile but challenging. Additionally, we will prioritize genomic variants of disease-causing genes based on literature information and the results of large-scale gene knockout projects in mice. The goal is to develop an information infrastructure for accurately selecting the most suitable mouse model strains for human disease research.
+In the future, we will not only focus on comparisons based solely on the homology of nucleotide sequences encoding proteins in humans and mice, but also take into consideration the functionality of cis-elements. Mapping variants in non-coding regions, such as UTRs, introns, and intergenic regions, is worthwhile but challenging. Additionally, we will prioritize genomic variants of disease-causing genes based on literature information and the results of large-scale gene knockout projects in mice. The goal is to develop an information infrastructure for accurately selecting the most suitable mouse model strains for human disease research.
 
 ## Acknowledgements
 
