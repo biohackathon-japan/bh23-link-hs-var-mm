@@ -44,20 +44,20 @@ PREFIX dct: <http://purl.org/dc/terms/>
 PREFIX gvo: <http://genome-variation.org/resource#>
 PREFIX hgnc: <http://identifiers.org/hgnc/>
 SELECT DISTINCT ?cons ?hgvsc ?hgvsp ?togovar ?hgnc (GROUP_CONCAT(DISTINCT ?interprt ; separator = ", " ) AS ?interpretation )
-FROM <http://togovar.biosciencedbc.jp/so>
-FROM <http://togovar.biosciencedbc.jp/hgnc>
-FROM <http://togovar.biosciencedbc.jp/variant/annotation/ensembl>
+FROM <http://togovar.org/so>
+FROM <http://togovar.org/hgnc>
+FROM <http://togovar.org/variant/annotation/ensembl>
 {{#if id.clinvar}}
-FROM <http://togovar.biosciencedbc.jp/clinvar>
-FROM <http://togovar.biosciencedbc.jp/variant/annotation/clinvar>
+FROM <http://togovar.org/clinvar>
+FROM <http://togovar.org/variant/annotation/clinvar>
 {{/if}}
 WHERE {
   {{#if id.symbol}}
-  GRAPH <http://togovar.biosciencedbc.jp/hgnc> {
+  GRAPH <http://togovar.org/hgnc> {
     ?hgnc rdfs:label "{{id.symbol}}" .
   }
   {{/if}}
-  GRAPH <http://togovar.biosciencedbc.jp/variant/annotation/ensembl> { 
+  GRAPH <http://togovar.org/variant/annotation/ensembl> {
     ?togovar tgvo:hasConsequence ?cons_node .
     ?cons_node a ?cons_type ;
                tgvo:hgvsc ?hgvsc ;
@@ -67,15 +67,15 @@ WHERE {
     }
     FILTER (REGEX (?hgvsc, "ENST"))
   }
-  GRAPH <http://togovar.biosciencedbc.jp/so> {
+  GRAPH <http://togovar.org/so> {
     ?cons_type rdfs:label ?cons .
   }
 {{#unless id.clinvar}}  OPTIONAL { {{/unless}}
-  GRAPH <http://togovar.biosciencedbc.jp/variant/annotation/clinvar> {
+  GRAPH <http://togovar.org/variant/annotation/clinvar> {
     ?togovar dct:identifier ?var_id .
     BIND(IRI(CONCAT("http://ncbi.nlm.nih.gov/clinvar/variation/", ?var_id)) AS ?clinvar)
   }
-  GRAPH <http://togovar.biosciencedbc.jp/clinvar> {
+  GRAPH <http://togovar.org/clinvar> {
     ?clinvar cvo:interpreted_record/cvo:rcv_list/cvo:rcv_accession/cvo:interpretation ?interprt .
   }
 {{#unless id.clinvar}}  } {{/unless}}
