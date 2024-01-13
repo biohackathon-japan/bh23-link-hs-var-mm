@@ -1,6 +1,6 @@
 ---
 title: 'BioHackJP 2023 Report R1: Mapping human genome variations to their mouse counterparts for identifying disease model mouse strains'
-title_short: 'BioHackJP 2023 MAP-HS-VAR-MM'
+title_short: 'Mapping human genome variations to their mouse counterparts'
 tags:
   - Human Disease Model Mouse
   - Genome Variation
