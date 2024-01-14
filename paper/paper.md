@@ -1,6 +1,6 @@
 ---
-title: 'BioHackJP 2023 Report R1: Mapping human genome variations to their mouse counterparts for identifying disease model mouse strains with human genome variations'
-title_short: 'BioHackJP 2023 MAP-HS-VAR-MM'
+title: 'BioHackJP 2023 Report R1: Mapping human genome variations to their mouse counterparts for identifying disease model mouse strains'
+title_short: 'Mapping human genome variations to their mouse counterparts'
 tags:
   - Human Disease Model Mouse
   - Genome Variation
@@ -38,7 +38,7 @@ authors_short: Mitsuhashi, N. \emph{et al.}
 
 # Background
 
-Experimental mice are widely used in human disease studies. Since the inception of mouse genetic research, hundreds of diverse strains have been established for biomedical research. In disease model mouse strains, information on genomic variations is essential for elucidating the relationship between haplotypes and disease susceptibility. To select a disease model mouse appropriately, it is crucial to identify mouse variants with the same effect as disease-causing variants in humans. Homologous human and mouse genes have been identified and shared in integrated human and model organism databases [@wang2017] [@homologene2023]. At the genetic variant level, however, the explicit relationships between human variants and their mouse counterparts have yet to be included in these databases. A previous study successfully mapped human pathogenic variants mostly found in conserved coding regions to orthologous positions in the cow and pig genomes [@zhao2022]. In BioHackathon Japan 2023, we aimed to map human pathogenic variants to orthologous positions in the mouse genome based on the sequence similarity between the two species.
+Experimental mice are widely used in human disease studies. Since the inception of mouse genetic research, hundreds of diverse strains have been established for biomedical research. In disease model mouse strains, information on genomic variations is essential for elucidating the relationship between haplotypes and disease susceptibility. To select a disease model mouse appropriately, it is crucial to identify mouse variants with the same effect as disease-causing variants in humans. Homologous human and mouse genes have been identified and shared in integrated human and model organism databases [@wang2017]. At the genetic variant level, however, the explicit relationships between human variants and their mouse counterparts have yet to be included in these databases. A previous study successfully mapped human pathogenic variants mostly found in conserved coding regions to orthologous positions in the cow and pig genomes [@zhao2022]. In BioHackathon Japan 2023, we aimed to map human pathogenic variants to orthologous positions in the mouse genome based on the sequence similarity between the two species.
 
 # Outcomes
 
@@ -89,7 +89,7 @@ The table explains how data was processed and which data sources, tools, and API
 
 # Future work
 
-We will work on improving the precision of variant mapping. Currently, gene relationships between humans and mice are derived exclusively from the HomoloGene ortholog cluster [@homologene2023]. However, supplementing HomoloGene with other ortholog databases could potentially enhance accuracy. Our current system covers only one-to-one gene relationships between humans and mice. Nevertheless, it is valuable to explore one-to-many relationships, especially in understanding essential mouse homologs related to immunity and olfaction. Additionally, it is crucial to evaluate alignment tools beyond ggsearch [@ggsearch2023]. The outcomes of our variant mapping will be presented as links connecting the comprehensive human variation database, TogoVar [@mitsuhashi2022], and the model mouse genome database, MoG+ [@takada2022].
+We will work on improving the precision of variant mapping. Currently, gene relationships between human and mouse are derived exclusively from the HomoloGene groups [@homologene2023]. However, supplementing HomoloGene with other ortholog databases could potentially enhance accuracy. Our current system covers only one-to-one gene relationships between humans and mice. Nevertheless, it is valuable to explore one-to-many relationships, especially in understanding essential mouse homologs related to immunity and olfaction. Additionally, it is crucial to evaluate alignment tools beyond ggsearch [@ggsearch2023]. The outcomes of our variant mapping will be presented as links connecting the comprehensive human variation database, TogoVar [@mitsuhashi2022], and the model mouse genome database, MoG+ [@takada2022].
 
 In the future, we will not only focus on comparisons based solely on the homology of nucleotide sequences encoding proteins in humans and mice, but also take into consideration the functionality of cis-elements. Mapping variants in non-coding regions, such as UTRs, introns, and intergenic regions, is worthwhile but challenging. Additionally, we will prioritize genomic variants of disease-causing genes based on literature information and the results of large-scale gene knockout projects in mice. The goal is to develop an information infrastructure for accurately selecting the most suitable mouse model strains for human disease research.
 
